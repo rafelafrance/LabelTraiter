@@ -15,7 +15,7 @@ install: venv
 	$(PIP_INSTALL) -U pip setuptools wheel
 	$(PIP_INSTALL) git+https://github.com/rafelafrance/common_utils.git@main#egg=common_utils
 	$(PIP_INSTALL) git+https://github.com/rafelafrance/traiter.git@master#egg=traiter
-	$(PIP_INSTALL) $(REPO)/FloraTraiter.git@main#egg=FloraTraiter
+	$(PIP_INSTALL) git+https://github.com/rafelafrance/FloraTraiter.git@main#egg=FloraTraiter
 	$(PIP_INSTALL) .
 	$(SPACY_MODEL)
 

@@ -1,68 +1,112 @@
-traiter_herbarium_labels
+LabelTraiter
 
 Extract traits about plants from labels on herbarium sheets.
 
 ## All right, what's this all about then?
 **Challenge**: Extract trait information from labels on herbarium sheets. That is, if I'm given label text like: (Reformatted to emphasize targeted fields.)
 
-![Treatment](assets/treatment.png)
+![Label](assets/text.png)
 
 I should be able to extract: (Colors correspond to the text above.)
 
 ![Traits](assets/traits.png)
 
-## Terms
-Essentially, we are finding relevant terms in the text (NER) and then linking them (Entity Linking). There are several types of terms:
-1. The traits themselves: These are things like color, size, shape, woodiness, etc. They are either a measurement, count, or a member of a controlled vocabulary.
-2. Plant parts: Things like leaves, branches, roots, seeds, etc. These have traits. So they must be linked to them.
-3. Plant subparts: Things like hairs, pores, margins, veins, etc. Leaves can have hairs and so can seeds. They also have traits and will be linked to them, but they must also be linked to a part to have any meaning.
-4. Sex: Plants exhibit sexual dimorphism, so we to note which part/subpart/trait notation is associated with which sex.
-5. Other text: Things like conjunctions, punctuation, etc. Although they are not recorded, they are often important for parsing and linking of terms.
+## Rule-based parsing
 
-## Rule-based parsing strategy
-1. I label terms using Spacy's phrase and rule-based matchers.
-2. Then I match terms using rule-based matchers repeatedly until I have built up a recognizable target term like: habitat, administrative unit, etc.
-3. Finally, I terms with each other.
+The task is take text like this:
+```
+Herbarium of
+San Diego State College
+Erysimum capitatum (Dougl.) Greene.
+Growing on bank beside Calif. Riding and
+Hiking Trail north of Descanso.
+13 May 1967 San Diego Co., Calif.
+Coll: R.M. Beauchamp No. 484
+```
+And convert it into a machine-readable Darwin Core format like:
+```json
+{
+    "dwc:eventDate": "1967-05-13",
+    "dwc:verbatimEventDate": "13 May 1967",
+    "dwc:country": "United States",
+    "dwc:stateProvince": "California",
+    "dwc:county": "San Diego",
+    "dwc:recordNumber": "484",
+    "dwc:verbatimLocality": "Bank beside California, Riding and Hiking Trail north of Descanso",
+    "dwc:recordedBy": "R.M. Beauchamp",
+    "dwc:scientificNameAuthorship": "Dougl Greene",
+    "dwc:scientificName": "Erysimum capitatum (Dougl.) Greene",
+    "dwc:taxonRank": "species"
+}
+```
+Of course, the OCRed input text and the resulting JSON are not always this clean.
 
-For example, given the text: `Petiole 1-2 cm.`:
-- I recognize vocabulary terms like:
-    - `Petiole` is plant part
-    - `1` a number
-    - `-` a dash
-    - `2` a number
-    - `cm` is a unit notation
-- Then I group tokens. For instance:
-    - `1-2 cm` is a range with units which becomes a size trait.
-- Finally, I associate the size with the plant part `Petiole` by using another pattern matching parser. Spacy will build a labeled sentence dependency tree. We look for patterns in the tree to link traits with plant parts.
+### Strategy
 
-There are, of course, complications and subtleties not outlined above, but you should get the gist of what is going on here.
+LabelTraiter uses a multistep approach to parse text into traits. The rules themselves are written using spaCy, with enhancements we developed to streamline the rule building process. The general outline of the rule building process follows:
+
+1. Have experts identify relevant terms and target traits.
+2. We use expert identified terms to label terms using spaCy's phrase matchers. These are sometimes traits themselves, but are more often used as anchors for more complex patterns of traits.
+3. We then build up more complex terms from simpler terms using spaCy's rule-based matchers repeatedly until there is a recognizable trait. See the image below.
+4. Depending on the trait we may then link traits to each other (entity relationships) using also spaCy rules.
+   1. Typically, a trait gets linked to a higher level entity like SPECIES <--- FLOWER <--- {COLOR, SIZE, etc.} and not peer to peer like PERSON <---> ORG.
+
+As an example of parsing a locality is shown below:
+
+![<img src="assets/locality_parsing.jpg" width="700" />](assets/locality_parsing.jpg)
+
+The rules can become complex and the vocabularies for things like taxa, or a gazetteer can be huge, but you should get the idea of what is involved in label parsing.
+
+LabelTraiter was originally developed to parse plant treatments and was later adapted to parse label text. As such, it does have some issues with parsing label text. When dealing with treatments the identification of traits/terms is fairly easy and the linking of traits to their proper plant part is only slightly more difficult.
+
+With labels, both the recognition of terms and linking them is difficult. There is often an elision of terms, museums or collectors may have their own abbreviations, and there is an inconsistent formatting of labels. Rule based-parsers are best at terms like dates, elevations, and latitudes/longitudes where the terms have recognizable structures, like numbers followed by units with a possible leading label. They are weakest is with vague terms like habitat, locality, or even names that require some sort of analysis of the context and meaning of the words.
 
 ## Install
+
 You will need to have Python3.11+ installed, as well as pip, a package manager for Python.
-You can install the requirements into your python environment like so:
+If you have `make` you can install the requirements into your python environment like so:
+
 ```bash
 git clone https://github.com/rafelafrance/traiter_herbarium_labels.git
 cd traiter_herbarium_labels
 make install
 ```
 
-### Taxon database
+If you don't have `make` then it's a bit more complicated.
 
-A taxon database is included with the source code, but it may be out of date. I build a taxon database from 4 sources. The 3 primary sources each have various issues, but they complement each other well.
+```bash
+git clone https://github.com/rafelafrance/traiter_herbarium_labels.git
+cd traiter_herbarium_labels
+python3.11 -m venv .venv
+source .venv/bin/activate
+python3.11 -m pip install pip setuptools wheel
+python3.11 -m pip install git+https://github.com/rafelafrance/common_utils.git@main#egg=common_utils
+python3.11 -m pip install git+https://github.com/rafelafrance/traiter.git@master#egg=traiter
+python3.11 -m pip install git+https://github.com/rafelafrance/FloraTraiter.git@main#egg=FloraTraiter
+python3.11 -m pip install .
+python3.11 -m spacy download en_core_web_md
+```
 
-1. [ITIS sqlite database](https://www.itis.gov/downloads/index.html)
-2. [The WFO Plant List](https://wfoplantlist.org/plant-list/classifications)
-3. [Plant of the World Online](http://sftp.kew.org/pub/data-repositories/WCVP/)
-4. [Some miscellaneous taxa not found in the other sources.](flora/pylib/rules/terms/other_taxa.csv)
+## Running
 
-Download the first 3 sources and then use the `util_add_taxa.py` script to extract the taxa and put them into a form the parsers can use.
+Every time you run any script in this repository (including tests), you'll have to activate the virtual environment once at the start of your session.
 
-## Repository details
+```bash
+cd traiter_herbarium_labels
+source .venv/bin/activate
+```
+
+If you have run tests, then please `export MOCK_TAXA=0` before you run any scripts on real data.
+
+```bash
+export MOCK_TAXA=0  # Only needed if you've run tests in the current session
+parse-labels <arguments to parse your labels>
+```
 
 ## Tests
+
 There are tests which you can run like so:
+
 ```bash
 export MOCK_TAXA=1; python -m unittest discover
 ```
-
-Please `export MOCK_TAXA=0` before you run any scripts on real data.
