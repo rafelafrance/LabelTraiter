@@ -1,0 +1,123 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "traiter_herbarium_labels"
+version = "0.0.1"
+readme = "README.md"
+description = ""
+license = {file = "LICENSE"}
+authors = [{name="Raphael LaFrance", email="raphael.lafrance@gmail.com"}]
+requires-python = ">=3.11"
+dependencies = [
+    "Jinja2",
+    "pandas",
+    "pillow",
+    "regex",
+    "spacy",
+    "tqdm",
+]
+optional-dependencies.dev = [
+    "build",
+    "pre-commit",
+    "pre-commit-hooks",
+    "ruff",
+    "ruff-lsp",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["labels"]
+namespaces = false
+
+[project.scripts]
+parse-labels = "labels.parse_labels:main"
+
+[tool.setuptools]
+py-modules = []
+
+[tool.ruff]
+target-version = "py311"
+
+show-fixes = true
+
+lint.select = [
+    "F",
+    "E",
+    "W",
+    "C90",
+    "I",
+    "N",
+    "D",
+    "UP",
+    "S",
+    "BLE",
+    "FBT",
+    "B",
+    "A",
+    "COM",
+    "C4",
+    "T10",
+    "EM",
+    "EXE",
+    "FA",
+    "ISC",
+    "ICN",
+    "G",
+    "INP",
+    "PIE",
+    "T20",
+    "PYI",
+    "PT",
+    "Q",
+    "RSE",
+    "RET",
+    "SLF",
+    "SLOT",
+    "SIM",
+    "TID",
+    "TCH",
+    "INT",
+    "ARG",
+    "PTH",
+    "TD",
+    "FIX",
+    "PD",
+    "PGH",
+    "PL",
+    "TRY",
+    "FLY",
+    "NPY",
+    "PERF",
+#    "FURB",  # refurb
+#    "LOG",  # flake8-logging
+    "RUF",
+]
+
+lint.ignore = [
+    "A003",  # Class attribute is shadowing a Python builtin
+    "COM812",  # Trailing comma missing
+    "D100",  # Missing docstring in public module
+    "D101",  # Missing docstring in public class
+    "D102",  # Missing docstring in public method
+    "D103",  # Missing docstring in public function
+    "D104",  # Missing docstring in public package
+    "D105",  # Missing docstring in public method
+    "D107",  # Missing docstring in public __init__
+    "D203",  # 1 blank line required before class docstring
+    "D212",  # Multi-line docstring summary should start at the first line
+    "ISC001",  # Implicitly concatenated string literals on one line
+    "N818",  # Exception name {name} should be named with an Error suffix
+    "PD901",  # Avoid using the generic variable name df for DataFrames
+    "PLR0913",  # Too many arguments in function definition ({c_args} > {max_args})
+    "PLW2901",  # Outer {outer_kind} variable {name} overwritten by inner {inner_kind} target
+    "PLW0603",  # Using the global statement to update {name} is discouraged
+    "PT009",  # Use a regular assert instead of unittest-style {assertion}
+    "RET504",  # Unnecessary assignment to {name} before return statement
+    "RUF001",  # String contains ambiguous {}. Did you mean {}?
+    "SIM114",  # Combine if branches using logical or operator
+    "SIM117",  # Use a single with statement with multiple contexts instead of nested with statements
+    "SLF001",  # Private member accessed: {access}
+    "T201",  # print found
+]
