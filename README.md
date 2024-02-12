@@ -1,4 +1,4 @@
-LabelTraiter
+# LabelTraiter ![Python application](https://github.com/rafelafrance/FloraTraiter/workflows/CI/badge.svg)
 
 Extract traits about plants from labels on herbarium sheets.
 
