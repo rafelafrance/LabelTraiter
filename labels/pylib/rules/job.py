@@ -20,7 +20,7 @@ TOO_LONG = 4
 @dataclass(eq=False)
 class Job(Base):
     # Class vars ----------
-    job_terms: ClassVar[Path] = Path(__file__).parent / "terms" / "job_terms.csv"
+    job_terms: ClassVar[Path] = Path(t_terms.__file__).parent / "job_terms.csv"
     all_csvs: ClassVar[list[Path]] = [
         job_terms,
         Path(__file__).parent / "terms" / "id_num_terms.csv",
@@ -83,7 +83,6 @@ class Job(Base):
             overwrite=["name", "job_label"],
             keep=[*ACCUMULATOR.keep, "not_name"],
         )
-        # add.debug_tokens(nlp)  # ################################################
 
         add.trait_pipe(
             nlp,
@@ -92,7 +91,6 @@ class Job(Base):
             overwrite=["other_label", "job", "name"],
             keep=[*ACCUMULATOR.keep, "not_name"],
         )
-        # add.debug_tokens(nlp)  # ################################################
 
         add.trait_pipe(
             nlp,
@@ -101,7 +99,6 @@ class Job(Base):
             overwrite=["job"],
             keep=[*ACCUMULATOR.keep, "not_name"],
         )
-        # add.debug_tokens(nlp)  # ################################################
 
         add.trait_pipe(
             nlp,
