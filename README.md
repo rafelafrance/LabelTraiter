@@ -99,7 +99,7 @@ source .venv/bin/activate
 If you have run tests, then please `export MOCK_TAXA=0` before you run any scripts on real data.
 
 ```bash
-export MOCK_TAXA=0  # Only needed if you've run tests in the current session
+export MOCK_DATA=0  # Only needed if you've run tests in the current session
 parse-labels <arguments to parse your labels>
 ```
 
@@ -108,5 +108,5 @@ parse-labels <arguments to parse your labels>
 There are tests which you can run like so:
 
 ```bash
-export MOCK_TAXA=1; python -m unittest discover
+export MOCK_DATA=1; python -m unittest discover
 ```
