@@ -96,7 +96,7 @@ cd traiter_herbarium_labels
 source .venv/bin/activate
 ```
 
-If you have run tests, then please `export MOCK_TAXA=0` before you run any scripts on real data.
+If you have run tests, then please `export MOCK_DATA=0` before you run any scripts on real data.
 
 ```bash
 export MOCK_DATA=0  # Only needed if you've run tests in the current session
