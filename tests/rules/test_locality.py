@@ -7,6 +7,7 @@ from flora.pylib.rules.subpart import Subpart
 from traiter.pylib.rules.elevation import Elevation
 from traiter.pylib.rules.habitat import Habitat
 
+from labels.pylib.rules.admin_unit import AdminUnit
 from labels.pylib.rules.locality import Locality
 from tests.setup import parse
 
@@ -48,16 +49,12 @@ class TestLocality(unittest.TestCase):
                     end=41,
                 ),
                 Locality(
-                    locality="Mud Run, Stonecrest Park,"
-                    ".16 miles SSW of Long Pond, PA.",
+                    locality=(
+                        "Mud Run, Stonecrest Park,.16 miles SSW of Long Pond, PA. "
+                        "Headwaters wetland of Indiana Mountains Lake."
+                    ),
                     trait="locality",
                     start=42,
-                    end=98,
-                ),
-                Locality(
-                    locality="Headwaters wetland of Indiana Mountains Lake.",
-                    trait="locality",
-                    start=99,
                     end=144,
                 ),
             ],
@@ -135,6 +132,7 @@ class TestLocality(unittest.TestCase):
                 """,
             ),
             [
+                AdminUnit(trait="admin_unit", start=0, end=7, us_state="Arizona"),
                 Habitat(
                     habitat="uppland sonoran desert desert scrub flats",
                     trait="habitat",

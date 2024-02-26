@@ -14,6 +14,7 @@ from traiter.pylib.rules import terms as t_terms
 from traiter.pylib.rules.base import Base
 
 TOO_LONG = 2
+TOO_SHORT = 2
 
 
 @dataclass(eq=False)
@@ -70,6 +71,7 @@ class AdminUnit(Base):
             compiler=cls.admin_unit_patterns(),
             overwrite=overwrite,
         )
+        # add.debug_tokens(nlp)  # ################################################
 
         add.cleanup_pipe(nlp, name="admin_unit_cleanup")
 
@@ -78,6 +80,7 @@ class AdminUnit(Base):
         decoder = {
             "bad_prefix": {"ENT_TYPE": "bad_prefix"},
             "bad_suffix": {"ENT_TYPE": "bad_suffix"},
+            "possessive": {"LOWER": {"REGEX": r"^[']s$"}},
             "us_county": {"ENT_TYPE": {"IN": cls.county_ents}},
             "us_state": {"ENT_TYPE": {"IN": cls.state_ents}},
         }
@@ -92,6 +95,7 @@ class AdminUnit(Base):
                     "bad_prefix+ us_state+",
                     "            us_state+  bad_suffix+",
                     "bad_prefix+ us_state+  bad_suffix+",
+                    "            us_state+  possessive+",
                 ],
             ),
         ]
@@ -172,7 +176,7 @@ class AdminUnit(Base):
                 keep="admin_unit",
                 decoder=decoder,
                 patterns=[
-                    "st_label+ of? ,? us_state+",
+                    "st_label* of? ,? us_state+",
                 ],
             ),
             Compiler(
@@ -201,6 +205,9 @@ class AdminUnit(Base):
 
     @classmethod
     def state_only_match(cls, ent):
+        if len(ent.text) <= TOO_SHORT:
+            raise reject_match.RejectMatch
+
         return cls.from_ent(ent, us_state=cls.format_state(ent, ent_index=0))
 
     @classmethod
@@ -265,7 +272,8 @@ class AdminUnit(Base):
     @classmethod
     def format_county(cls, ent, *, ent_index: int):
         sub_ents = [e.text for e in ent.ents if e.label_ in cls.admin_ents]
-        return sub_ents[ent_index].title()
+        sub_ent = sub_ents[ent_index]
+        return cls.replace.get(sub_ent, sub_ent).title()
 
     @staticmethod
     def is_county_not_colorado(state_ent, county_ent):

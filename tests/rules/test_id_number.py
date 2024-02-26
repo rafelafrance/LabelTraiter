@@ -4,8 +4,8 @@ from labels.pylib.rules.id_number import IdNumber
 from tests.setup import parse
 
 
-class TestCollector(unittest.TestCase):
-    def test_collector_01(self):
+class TestIdNumber(unittest.TestCase):
+    def test_id_number_01(self):
         self.assertEqual(
             parse("""No. 5595"""),
             [
@@ -20,7 +20,7 @@ class TestCollector(unittest.TestCase):
             ],
         )
 
-    def test_collector_02(self):
+    def test_id_number_02(self):
         self.assertEqual(
             parse("""Acc. No: 39"""),
             [
@@ -35,7 +35,7 @@ class TestCollector(unittest.TestCase):
             ],
         )
 
-    def test_collector_03(self):
+    def test_id_number_03(self):
         self.assertEqual(
             parse("""Col No 39"""),
             [

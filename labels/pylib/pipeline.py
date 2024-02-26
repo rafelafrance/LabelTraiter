@@ -1,4 +1,6 @@
 import spacy
+from flora.pylib.rules import delete_missing, delete_too_far
+from flora.pylib.rules import post_process as flora_post_process
 from flora.pylib.rules.color import Color
 from flora.pylib.rules.count import Count
 from flora.pylib.rules.duration import Duration
@@ -38,7 +40,7 @@ from traiter.pylib.rules.lat_long import LatLong
 from traiter.pylib.rules.trs import TRS
 from traiter.pylib.rules.utm import UTM
 
-from labels.pylib.rules import delete_missing, job_id, post_process
+from labels.pylib.rules import job_id, post_process
 from labels.pylib.rules.admin_unit import AdminUnit
 from labels.pylib.rules.associated_taxon_label import AssociatedTaxonLabel
 from labels.pylib.rules.id_number import IdNumber
@@ -48,7 +50,7 @@ from labels.pylib.rules.locality import Locality
 # from traiter.pylib.pipes import debug
 
 
-def build():
+def build():  # noqa: PLR0915
     extensions.add_extensions()
 
     nlp = spacy.load("en_core_web_md", exclude=["ner"])
@@ -112,11 +114,13 @@ def build():
     TaxonLikeLinker.pipe(nlp)
 
     delete_missing.pipe(nlp)
+    delete_too_far.pipe(nlp)
 
     AssociatedTaxonLabel.pipe(nlp)
 
     Locality.pipe(nlp)
 
+    flora_post_process.pipe(nlp)
     post_process.pipe(nlp)
 
     return nlp

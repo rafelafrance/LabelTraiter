@@ -53,10 +53,12 @@ class Locality(Base):
             path=cls.get_csvs(),
             default_labels=default_labels,
         )
+        # add.debug_tokens(nlp)  # #############################################
 
         add.trait_pipe(nlp, name="locality_patterns", compiler=cls.locality_patterns())
 
         add.custom_pipe(nlp, registered="prune_localities")
+        # add.debug_tokens(nlp)  # #############################################
 
         for i in range(1, 5):
             add.trait_pipe(
@@ -72,6 +74,7 @@ class Locality(Base):
             compiler=cls.end_locality(),
             overwrite=["locality", *cls.all_traits],
         )
+        # add.debug_tokens(nlp)  # #############################################
 
         add.cleanup_pipe(nlp, name="locality_cleanup")
 

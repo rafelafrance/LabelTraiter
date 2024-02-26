@@ -893,3 +893,18 @@ class TestCollector(unittest.TestCase):
                 ),
             ],
         )
+
+    def test_collector_44(self):
+        self.assertEqual(
+            parse("""COLLECTOR Stephanie M. Gunn-Zumbo and Diane M. Ferguson"""),
+            [
+                Job(
+                    trait="job",
+                    name=["Stephanie M. Gunn-Zumbo", "Diane M. Ferguson"],
+                    job="collector",
+                    has_label=True,
+                    start=0,
+                    end=55,
+                ),
+            ],
+        )

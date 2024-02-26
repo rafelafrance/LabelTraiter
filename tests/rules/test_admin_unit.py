@@ -190,7 +190,7 @@ class TestAdminUnit(unittest.TestCase):
         """It does not pick up label headers and footers."""
         self.assertEqual(
             parse("""Tree The New York Botanical Garden Herbarium"""),
-            [Part(end=4, part="tree", start=0, trait="part", type="plant_part")],
+            [Part(part="tree", type="plant_part", trait="part", start=0, end=4)],
         )
 
     def test_admin_unit_15(self):
@@ -264,6 +264,19 @@ class TestAdminUnit(unittest.TestCase):
                     trait="admin_unit",
                     start=0,
                     end=20,
+                ),
+            ],
+        )
+
+    def test_admin_unit_20(self):
+        self.assertEqual(
+            parse("""ST. BERNARDO PARISH."""),
+            [
+                AdminUnit(
+                    us_county="St. Bernard",
+                    trait="admin_unit",
+                    start=0,
+                    end=19,
                 ),
             ],
         )

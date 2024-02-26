@@ -8,6 +8,7 @@ from traiter.pylib import term_util as tu
 from traiter.pylib.darwin_core import DWC, DarwinCore
 from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add, reject_match
+from traiter.pylib.rules import terms as t_terms
 from traiter.pylib.rules.base import Base
 
 
@@ -15,8 +16,16 @@ from traiter.pylib.rules.base import Base
 class IdNumber(Base):
     # Class vars ----------
     id_num_csv: ClassVar[Path] = Path(__file__).parent / "terms" / "id_num_terms.csv"
+    us_loc_csv: ClassVar[Path] = Path(t_terms.__file__).parent / "us_location_terms.csv"
     punct: ClassVar[str] = "[.:;,_-]"
     labels: ClassVar[list[str]] = tu.get_labels(id_num_csv)
+    us_loc: ClassVar[list[str]] = tu.get_labels(us_loc_csv)
+    bad_prefix: ClassVar[list[str]] = [
+        "not_id_prefix",
+        "not_id",
+        "us_state",
+        "us_state-us_county",
+    ]
     # ---------------------
 
     number: str = None
@@ -41,7 +50,7 @@ class IdNumber(Base):
 
     @classmethod
     def pipe(cls, nlp: Language = None):
-        add.term_pipe(nlp, name="id_num_terms", path=cls.id_num_csv)
+        add.term_pipe(nlp, name="id_num_terms", path=[cls.id_num_csv, cls.us_loc_csv])
         # add.debug_tokens(nlp)  # ################################################
 
         add.trait_pipe(
@@ -65,7 +74,7 @@ class IdNumber(Base):
         decoder = {
             "-": {"TEXT": {"REGEX": r"^[._-]+$"}},
             ":": {"LOWER": {"REGEX": rf"^(by|{cls.punct}+)$"}},
-            "bad_prefix": {"ENT_TYPE": {"IN": ["not_id_prefix", "not_id"]}},
+            "bad_prefix": {"ENT_TYPE": {"IN": cls.bad_prefix}},
             "bad_suffix": {"ENT_TYPE": {"IN": ["not_id_suffix", "not_id"]}},
             "id1": {"LOWER": {"REGEX": r"^(\w*\d+\w*)$"}},
             "id2": {"LOWER": {"REGEX": r"^(\w*\d+\w*|[A-Za-z])$"}},
@@ -84,6 +93,7 @@ class IdNumber(Base):
                     "bad_prefix+ id1+ no_space+ id1",
                     "bad_prefix+ id1+ no_space+ id2",
                     "bad_prefix+ id1",
+                    "bad_prefix+ id1",
                     "bad_prefix+ id1+ no_space+ id1 bad_suffix+",
                     "bad_prefix+ id1+ no_space+ id2 bad_suffix+",
                     "bad_prefix+ id1                bad_suffix+",
@@ -98,10 +108,11 @@ class IdNumber(Base):
     @classmethod
     def id_num_patterns(cls):
         decoder = {
-            "-": {"TEXT": {"REGEX": r"^[._-]+$"}},
+            "-": {"TEXT": {"REGEX": r"^[.,_-]+$"}},
             ":": {"LOWER": {"REGEX": rf"^(by|{cls.punct}+)$"}},
             "id1": {"LOWER": {"REGEX": r"^(\w*\d+\w*)$"}},
             "id2": {"LOWER": {"REGEX": r"^(\w*\d+\w*|[A-Za-z])$"}},
+            "id3": {"LOWER": {"REGEX": r"^(\w*\d+\w*)[.,_-]+(\w*\d+\w*|[A-Za-z])$"}},
             "label": {"ENT_TYPE": {"IN": cls.labels}},
             "no_space": {"SPACY": False},
         }
@@ -119,6 +130,7 @@ class IdNumber(Base):
                     "label+ :* id1+ no_space+ id1",
                     "label+ :* id1+ no_space+ id2",
                     "label+ :* id1",
+                    "label+ :* id3",
                 ],
             ),
         ]

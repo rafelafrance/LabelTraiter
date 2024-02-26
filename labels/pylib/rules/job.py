@@ -110,7 +110,6 @@ class Job(Base):
 
         delete = ["not_name", "name", "job_label", "other_label"]
         add.cleanup_pipe(nlp, name="person_cleanup", delete=delete)
-        # add.debug_tokens(nlp)  # ################################################
 
     @classmethod
     def job_patterns(cls):
