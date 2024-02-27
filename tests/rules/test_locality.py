@@ -282,3 +282,16 @@ class TestLocality(unittest.TestCase):
             parse("""M a fo C1 Vi 1"""),
             [],
         )
+
+    def test_locality_17(self):
+        self.assertEqual(
+            parse("""Cheyenne Crossing on US Hwy. 85"""),
+            [
+                Locality(
+                    trait="locality",
+                    start=0,
+                    end=31,
+                    locality="Cheyenne Crossing on US Hwy. 85",
+                ),
+            ],
+        )

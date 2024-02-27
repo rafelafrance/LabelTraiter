@@ -3,17 +3,9 @@
 Extract traits about plants from labels on herbarium sheets.
 
 ## All right, what's this all about then?
-**Challenge**: Extract trait information from labels on herbarium sheets. That is, if I'm given label text like: (Reformatted to emphasize targeted fields.)
-
-![Label](assets/text.png)
-
-I should be able to extract: (Colors correspond to the text above.)
-
-![Traits](assets/traits.png)
-
-## Rule-based parsing
 
 The task is take text like this:
+
 ```
 Herbarium of
 San Diego State College
@@ -23,7 +15,9 @@ Hiking Trail north of Descanso.
 13 May 1967 San Diego Co., Calif.
 Coll: R.M. Beauchamp No. 484
 ```
+
 And convert it into a machine-readable Darwin Core format like:
+
 ```json
 {
     "dwc:eventDate": "1967-05-13",
@@ -39,6 +33,7 @@ And convert it into a machine-readable Darwin Core format like:
     "dwc:taxonRank": "species"
 }
 ```
+
 Of course, the OCRed input text and the resulting JSON are not always this clean.
 
 ### Strategy
@@ -49,13 +44,13 @@ LabelTraiter uses a multistep approach to parse text into traits. The rules them
 2. We use expert identified terms to label terms using spaCy's phrase matchers. These are sometimes traits themselves, but are more often used as anchors for more complex patterns of traits.
 3. We then build up more complex terms from simpler terms using spaCy's rule-based matchers repeatedly until there is a recognizable trait. See the image below.
 4. Depending on the trait we may then link traits to each other (entity relationships) using also spaCy rules.
-   1. Typically, a trait gets linked to a higher level entity like SPECIES <--- FLOWER <--- {COLOR, SIZE, etc.} and not peer to peer like PERSON <---> ORG.
+   1. Typically, a trait gets linked to a higher level entity like SPECIES <--- FLOWER <--- {COLOR, SIZE, etc.}.
 
 As an example of parsing a locality is shown below:
 
 ![<img src="assets/locality_parsing.jpg" width="700" />](assets/locality_parsing.jpg)
 
-The rules can become complex and the vocabularies for things like taxa, or a gazetteer can be huge, but you should get the idea of what is involved in label parsing.
+The rules can become complex and the vocabularies for things like taxa, or a gazetteer can be huge, but the image above should get the idea of what is involved in label parsing.
 
 LabelTraiter was originally developed to parse plant treatments and was later adapted to parse label text. As such, it does have some issues with parsing label text. When dealing with treatments the identification of traits/terms is fairly easy and the linking of traits to their proper plant part is only slightly more difficult.
 

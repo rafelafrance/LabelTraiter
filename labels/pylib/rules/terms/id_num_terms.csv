@@ -39,6 +39,9 @@ record_number,number
 record_number,number:
 not_id,=
 not_id_prefix,voucher
+not_id_prefix,casa
+not_id_prefix,casa-
+not_id_prefix,casa:
 not_id_prefix,code
 not_id_prefix,code:
 not_id_prefix,ed

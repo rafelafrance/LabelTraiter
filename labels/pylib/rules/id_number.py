@@ -58,6 +58,7 @@ class IdNumber(Base):
             name="not_id_num_patterns",
             compiler=cls.not_id_num_patterns(),
         )
+        # add.debug_tokens(nlp)  # ################################################
 
         add.trait_pipe(
             nlp,
@@ -93,14 +94,14 @@ class IdNumber(Base):
                     "bad_prefix+ id1+ no_space+ id1",
                     "bad_prefix+ id1+ no_space+ id2",
                     "bad_prefix+ id1",
-                    "bad_prefix+ id1",
                     "bad_prefix+ id1+ no_space+ id1 bad_suffix+",
                     "bad_prefix+ id1+ no_space+ id2 bad_suffix+",
                     "bad_prefix+ id1                bad_suffix+",
                     "            id1+ no_space+ id1 bad_suffix+",
                     "            id1+ no_space+ id2 bad_suffix+",
                     "            id1                bad_suffix+",
-                    " bad_leader bad_follower",
+                    "bad_leader  bad_follower",
+                    "id1 bad_suffix+ id1",
                 ],
             ),
         ]

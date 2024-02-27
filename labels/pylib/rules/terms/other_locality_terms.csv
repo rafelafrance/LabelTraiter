@@ -11,6 +11,8 @@ loc_label,locations:
 not_loc,accession number
 not_loc,and densely
 not_loc,coarsely wrinkled
+not_loc,collector
+not_loc,collectors
 not_loc,common
 not_loc,common name
 not_loc,couple of times
@@ -63,3 +65,8 @@ not_loc,whorls
 not_loc,whorls of
 not_loc,with :
 not_loc,with pale
+not_loc_prefix,herbarium of
+not_loc_prefix,university of
+not_loc_prefix,flora of
+not_loc_suffix,state university
+not_loc_suffix,university

@@ -75,6 +75,7 @@ class Job(Base):
     @classmethod
     def pipe(cls, nlp: Language):
         add.term_pipe(nlp, name="job_terms", path=cls.all_csvs)
+        # add.debug_tokens(nlp)  # ################################################
 
         add.trait_pipe(
             nlp,
@@ -83,6 +84,7 @@ class Job(Base):
             overwrite=["name", "job_label"],
             keep=[*ACCUMULATOR.keep, "not_name"],
         )
+        # add.debug_tokens(nlp)  # ################################################
 
         add.trait_pipe(
             nlp,
@@ -91,6 +93,7 @@ class Job(Base):
             overwrite=["other_label", "job", "name"],
             keep=[*ACCUMULATOR.keep, "not_name"],
         )
+        # add.debug_tokens(nlp)  # ################################################
 
         add.trait_pipe(
             nlp,
@@ -99,6 +102,7 @@ class Job(Base):
             overwrite=["job"],
             keep=[*ACCUMULATOR.keep, "not_name"],
         )
+        # add.debug_tokens(nlp)  # ################################################
 
         add.trait_pipe(
             nlp,

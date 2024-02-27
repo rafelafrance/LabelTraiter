@@ -20,7 +20,9 @@ TOO_LONG = 2
 class Locality(Base):
     # Class vars ----------
     # Traits at ends of locality phrases
-    outer_traits: ClassVar[list[str]] = " habitat admin_unit subpart count".split()
+    outer_traits: ClassVar[list[str]] = """"
+        admin_unit count habitat id_number subpart
+        """.split()
 
     all_traits: ClassVar[list[str]] = [*outer_traits, "color"]
 
@@ -68,6 +70,7 @@ class Locality(Base):
                 overwrite=["locality", *cls.all_traits],
             )
 
+        # add.debug_tokens(nlp)  # #############################################
         add.trait_pipe(
             nlp,
             name="end_locality",
@@ -76,7 +79,29 @@ class Locality(Base):
         )
         # add.debug_tokens(nlp)  # #############################################
 
-        add.cleanup_pipe(nlp, name="locality_cleanup")
+        add.cleanup_pipe(nlp, name="locality_cleanup", delete=["not_locality"])
+
+    @classmethod
+    def not_locality_patterns(cls):
+        decoder = {
+            "not_loc": {"ENT_TYPE": "not_loc"},
+            "bad_prefix": {"ENT_TYPE": "not_loc_prefix"},
+            "bad_suffix": {"ENT_TYPE": "not_loc_suffix"},
+        }
+        return [
+            Compiler(
+                label="not_locality",
+                keep="not_locality",
+                on_match="not_locality_match",
+                decoder=decoder,
+                patterns=[
+                    " not_loc+ ",
+                    " bad_prefix+ loc* ",
+                    "             loc* bad_suffix+ ",
+                    " bad_prefix+ loc* bad_suffix+ ",
+                ],
+            ),
+        ]
 
     @classmethod
     def locality_patterns(cls):
@@ -85,6 +110,7 @@ class Locality(Base):
             "'s": {"POS": "PART"},
             "9": {"LIKE_NUM": True},
             "and": {"POS": {"IN": "ADP AUX CCONJ DET NUM SCONJ SPACE".split()}},
+            "id_num": {"ENT_TYPE": "id_number"},
             "label": {"ENT_TYPE": "loc_label"},
             "loc": {"ENT_TYPE": "loc"},
             "sp": {"IS_SPACE": True},
@@ -106,6 +132,14 @@ class Locality(Base):
                     "9? loc+ and+ loc+ and+ loc+ and+ loc+ and+ loc+ 9?",
                     "9? loc+ trait 9?",
                     "9? loc+ word loc+ 9?",
+                    "id_num? loc+ 's?  loc+ id_num?",
+                    "id_num? loc+ ,+   loc+ id_num?",
+                    "id_num? loc+ and+ loc+ id_num?",
+                    "id_num? loc+ and+ loc+ and+ loc+ id_num?",
+                    "id_num? loc+ and+ loc+ and+ loc+ and+ loc+ id_num?",
+                    "id_num? loc+ and+ loc+ and+ loc+ and+ loc+ and+ loc+ id_num?",
+                    "id_num? loc+ trait+ id_num?",
+                    "id_num? loc+ word loc+ id_num?",
                 ],
             ),
         ]
@@ -121,6 +155,7 @@ class Locality(Base):
                     ",": {"TEXT": {"IN": cls.punct}},
                     "9": {"LIKE_NUM": True},
                     "and": {"POS": {"IN": "ADP AUX CCONJ DET NUM SCONJ SPACE".split()}},
+                    "id_num": {"ENT_TYPE": "id_number"},
                     "loc": {"ENT_TYPE": "loc"},
                     "locality": {"ENT_TYPE": "locality"},
                     "rt": {"LOWER": {"REGEX": r"^\w[\w.]{,2}$"}},
@@ -129,10 +164,12 @@ class Locality(Base):
                     "word": {"IS_ALPHA": True},
                 },
                 patterns=[
-                    "sent_start+ 9?  ,? locality+",
+                    "sent_start+ 9?        ,? locality+",
+                    "sent_start+ id_num?  ,? locality+",
                     "locality+   rt* ,? rt* ,? rt+",
                     "            rt* ,? rt* ,? rt+      locality+",
-                    "locality+   word ,? 9? ,? trait*   locality+",
+                    "locality+   word ,? 9?      ,? trait*   locality+",
+                    "locality+   word ,? id_num? ,? trait*   locality+",
                     "locality+   word? ,? and? trait* and? ,? locality+",
                     "locality+   word? ,? and? trait* and? ,? loc+",
                     "loc+        word? ,? and? trait* and? ,? locality+",
@@ -147,6 +184,7 @@ class Locality(Base):
             ".": {"TEXT": {"IN": t_const.DOT + t_const.SEMICOLON + t_const.Q_MARK}},
             "9": {"LIKE_NUM": True},
             "not_eol": {"LOWER": {"REGEX": r"^[^\n\r;.]+$"}},
+            "id_num": {"ENT_TYPE": "id_number"},
             "label": {"ENT_TYPE": "loc_label"},
             "locality": {"ENT_TYPE": "locality"},
             "in_sent": {"IS_SENT_START": False},
@@ -162,9 +200,10 @@ class Locality(Base):
                 decoder=decoder,
                 keep="locality",
                 patterns=[
-                    "locality+ ,? sp? word? sp? trait+ .",
-                    "locality+ ,? sp? word? sp? 9+ .",
-                    "locality+ ,? sp? word+ sp? .",
+                    "locality+ ,? sp? word? sp?    trait+ .",
+                    "locality+ ,? sp? word? sp? .? 9+ .?",
+                    "locality+ ,? sp? word? sp? .? id_num+ .?",
+                    "locality+ ,? sp? word+ sp?    .",
                 ],
             ),
             Compiler(
@@ -219,10 +258,19 @@ class Locality(Base):
                 break
         return cls.from_ent(ent, locality=ent[i:].text, labeled=True)
 
+    @classmethod
+    def not_locality_match(cls, ent):
+        return cls.from_ent(ent)
+
 
 @registry.misc("locality_match")
 def locality_match(ent):
     return Locality.locality_match(ent)
+
+
+@registry.misc("not_locality_match")
+def not_locality_match(ent):
+    return Locality.not_locality_match(ent)
 
 
 @registry.misc("labeled_locality_match")

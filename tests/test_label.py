@@ -8,15 +8,19 @@ class TestLabel(unittest.TestCase):
 
     # def test_label_01(self):
     #     all_dwc("""
-    #         ANNOTATION LABEL
-    #          Eclipta prostrata (L.) L
-    #          Det. Ronald L. McGregor April 1983
-    #          Plants of KANSAS -
-    #          Eclipta alba (L) Hassk.
-    #          Neosho County
-    #          3 mi of Walnut
-    #          bed oF Tentrock Creek
-    #          September 3, 1963
-    #          W,, Holland 227
-    #          The University of Kansas Lawrence, Kansas
+    #         HERBARIUM OF CALIFORNIA STATE UNIVERSITY, CHICO
+    #          Silene occidentalis S. Watson ssp. occidentalis
+    #          Plumas County, CALIFORNIA Elevation 1707 m
+    #          T23N, R8E, NE%/ of SE% of sec. 23 Lat: N 39' 50' 22"
+    #          Dogwood Peak quad Long: W 121° 02' 45"
+    #          Northern High Sierra Nevada. Top of south-facing slope overlook-
+    #          wing Middle Fork Feather River; head of Sherman Creek. Wildfire
+    #          killed mixed conifer forest (Ponderosa pine, white fir, black oak,
+    #          incense cedar; Arctostaphylos patula, Garrya fremontii, Prunus
+    #          emarginata, Ceanothus cordulatus; Monardella odoratissima ssp.
+    #          pallida, Helianthella californica var. nevadensis, Nama lobbii,
+    #          Symphoricarpos mollis, Wyethia mollis, Eriogonum nudum, Carex
+    #          brainerdii. Stems strictly erecta; flowers greenish-yellow; plants
+    #          very sticky.
+    #          L. P. Janeway 7259 3/VII/2001
     #     """)
