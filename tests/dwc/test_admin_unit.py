@@ -15,7 +15,7 @@ class TestAdminUnit(unittest.TestCase):
     def test_admin_unit_dwc_02(self):
         self.assertEqual(
             to_dwc(LABEL, "The University of Georgia Athens, GA, U.S.A."),
-            {"dwc:country": "USA"},
+            {"dwc:country": "USA", "dwc:stateProvince": "Georgia"},
         )
 
     def test_admin_unit_dwc_03(self):

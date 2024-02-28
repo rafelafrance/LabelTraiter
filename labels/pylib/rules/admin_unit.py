@@ -36,6 +36,7 @@ class AdminUnit(Base):
         "us_county",
         "us_state-us_county",
         "us_territory",
+        "country",
     ]
     # ---------------------
 
@@ -121,10 +122,20 @@ class AdminUnit(Base):
                 label="country",
                 id="admin_unit",
                 on_match="country_match",
-                keep="country",
+                keep="admin_unit",
                 decoder=decoder,
                 patterns=[
                     "country+",
+                ],
+            ),
+            Compiler(
+                label="state_country",
+                id="admin_unit",
+                on_match="state_country_match",
+                keep="admin_unit",
+                decoder=decoder,
+                patterns=[
+                    "us_state+ ,* country+",
                 ],
             ),
             Compiler(
@@ -216,6 +227,13 @@ class AdminUnit(Base):
         return cls.from_ent(ent, country=country)
 
     @classmethod
+    def state_country_match(cls, ent):
+        sub_ents = [e for e in ent.ents if e.label_ in cls.admin_ents]
+        state = cls.format_state(ent, ent_index=0)
+        country = cls.replace.get(sub_ents[1].text.lower(), sub_ents[1].text)
+        return cls.from_ent(ent, us_state=state, country=country)
+
+    @classmethod
     def county_state_match(cls, ent):
         if len(ent.ents) < TOO_LONG:
             raise reject_match.RejectMatch
@@ -304,6 +322,11 @@ def state_only_match(ent):
 @registry.misc("country_match")
 def country_match(ent):
     return AdminUnit.country_match(ent)
+
+
+@registry.misc("state_country_match")
+def state_country_match(ent):
+    return AdminUnit.state_country_match(ent)
 
 
 @registry.misc("county_state_match")
