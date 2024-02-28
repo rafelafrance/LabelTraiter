@@ -20,17 +20,17 @@ And convert it into a machine-readable Darwin Core format like:
 
 ```json
 {
-    "dwc:eventDate": "1967-05-13",
-    "dwc:verbatimEventDate": "13 May 1967",
     "dwc:country": "United States",
-    "dwc:stateProvince": "California",
     "dwc:county": "San Diego",
+    "dwc:eventDate": "1967-05-13",
     "dwc:recordNumber": "484",
-    "dwc:verbatimLocality": "Bank beside California, Riding and Hiking Trail north of Descanso",
     "dwc:recordedBy": "R.M. Beauchamp",
-    "dwc:scientificNameAuthorship": "Dougl Greene",
     "dwc:scientificName": "Erysimum capitatum (Dougl.) Greene",
-    "dwc:taxonRank": "species"
+    "dwc:scientificNameAuthorship": "Dougl Greene",
+    "dwc:stateProvince": "California",
+    "dwc:taxonRank": "species",
+    "dwc:verbatimEventDate": "13 May 1967",
+    "dwc:verbatimLocality": "Bank beside California, Riding and Hiking Trail north of Descanso"
 }
 ```
 
