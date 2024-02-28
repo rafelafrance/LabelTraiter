@@ -23,7 +23,7 @@ def main():
         writer.write(labels, args)
 
     if args.traiter_dir:
-        args.traiter_dir.mkdir(parent=True, exist_ok=True)
+        args.traiter_dir.mkdir(parents=True, exist_ok=True)
         write_json(args, labels, args.traiter_dir)
 
     log.finished()

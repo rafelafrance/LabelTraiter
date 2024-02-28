@@ -1,12 +1,12 @@
 from pathlib import Path
 
+from flora.pylib.rules import terms as f_terms
 from tqdm import tqdm
 from traiter.pylib import term_util
 from traiter.pylib.spell_well import SpellWell
 
 from labels.pylib import pipeline
 from labels.pylib.label import Label
-from labels.pylib.rules import terms as p_terms
 
 
 class Labels:
@@ -38,11 +38,11 @@ class Labels:
         spell_well = SpellWell()
         vocabulary = {w.lower() for w in spell_well.vocab_to_set()}
 
-        path = Path(p_terms.__file__).parent / "binomial_terms.zip"
+        path = Path(f_terms.__file__).parent / "binomial_terms.zip"
         for term in term_util.read_terms(path):
             vocabulary |= set(term["pattern"].lower().split())
 
-        path = Path(p_terms.__file__).parent / "monomial_terms.zip"
+        path = Path(f_terms.__file__).parent / "monomial_terms.zip"
         vocabulary |= {t["pattern"] for t in term_util.read_terms(path)}
 
         return vocabulary

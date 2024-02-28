@@ -288,3 +288,17 @@ class TestAdminUnit(unittest.TestCase):
                 ),
             ],
         )
+
+    def test_admin_unit_21(self):
+        self.assertEqual(
+            parse("""San Benito County, California."""),
+            [
+                AdminUnit(
+                    us_state="California",
+                    us_county="San Benito",
+                    trait="admin_unit",
+                    start=0,
+                    end=29,
+                ),
+            ],
+        )
