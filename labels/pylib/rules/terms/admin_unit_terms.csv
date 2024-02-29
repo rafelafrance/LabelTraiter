@@ -1,8 +1,11 @@
 label,pattern
+bad_prefix,college
+bad_prefix,college of
 bad_prefix,herbarium of
 bad_prefix,national
 bad_prefix,the
 bad_prefix,university of
+bad_suffix,agricultural
 bad_suffix,botanical
 bad_suffix,garcia
 bad_suffix,herbarium
@@ -10,6 +13,8 @@ bad_suffix,lake
 bad_suffix,mountain
 bad_suffix,road
 bad_suffix,state park
+bad_suffix,state agricultural college
+bad_suffix,state college
 bad_suffix,state university
 bad_suffix,university
 state_label,flora

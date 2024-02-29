@@ -302,3 +302,28 @@ class TestAdminUnit(unittest.TestCase):
                 ),
             ],
         )
+
+    def test_admin_unit_22(self):
+        self.assertEqual(
+            parse("""Plants of Kern Co, USA"""),
+            [
+                AdminUnit(
+                    us_county="Kern",
+                    trait="admin_unit",
+                    start=10,
+                    end=17,
+                ),
+                AdminUnit(
+                    country="USA",
+                    trait="admin_unit",
+                    start=19,
+                    end=22,
+                ),
+            ],
+        )
+
+    def test_admin_unit_23(self):
+        self.assertEqual(
+            parse("""Oregon State Agricultural College"""),
+            [],
+        )
