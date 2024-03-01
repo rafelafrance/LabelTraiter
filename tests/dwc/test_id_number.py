@@ -21,3 +21,12 @@ class TestJob(unittest.TestCase):
                 "dwc:recordNumber": "195",
             },
         )
+
+    def test_job_03(self):
+        self.assertEqual(
+            to_dwc(LABEL, "R. Mc Elderry No. 9480"),
+            {
+                "dwc:recordNumber": "9480",
+                "dwc:dynamicProperties": {"recordNumberIsLabeled": True},
+            },
+        )

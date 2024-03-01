@@ -33,9 +33,15 @@ class IdNumber(Base):
     has_label: bool = None
 
     def to_dwc(self, dwc) -> DarwinCore:
-        if self.key.startswith(DWC):
-            return dwc.add(**{self.key: self.number})
-        return dwc.add_dyn(**{self.key: self.number})
+        key = self.key
+
+        if self.has_label:
+            dwc.add_dyn(**{self.labeled_key(key): True})
+
+        if key.startswith(DWC):
+            return dwc.add(**{key: self.number})
+
+        return dwc.add_dyn(**{key: self.number})
 
     @property
     def key(self) -> str:
@@ -47,6 +53,10 @@ class IdNumber(Base):
             case _:
                 key = DarwinCore.ns("recordNumber")
         return key
+
+    @staticmethod
+    def labeled_key(key):
+        return DarwinCore.remove_ns(key) + "IsLabeled"
 
     @classmethod
     def pipe(cls, nlp: Language = None):

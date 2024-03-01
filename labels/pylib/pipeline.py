@@ -40,7 +40,7 @@ from traiter.pylib.rules.lat_long import LatLong
 from traiter.pylib.rules.trs import TRS
 from traiter.pylib.rules.utm import UTM
 
-from labels.pylib.rules import job_id, post_process
+from labels.pylib.rules import job_id, post_process, remove_unlabeled_ids
 from labels.pylib.rules.admin_unit import AdminUnit
 from labels.pylib.rules.associated_taxon_label import AssociatedTaxonLabel
 from labels.pylib.rules.id_number import IdNumber
@@ -87,6 +87,8 @@ def build():  # noqa: PLR0915
     Woodiness.pipe(nlp)
 
     IdNumber.pipe(nlp)
+    remove_unlabeled_ids.pipe(nlp)
+
     Name.pipe(nlp, overwrite=["subpart", "color", "admin_unit"])
     Job.pipe(nlp)
     job_id.pipe(nlp)
