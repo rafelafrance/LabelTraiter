@@ -25,10 +25,10 @@ class AdminUnit(Base):
         Path(t_terms.__file__).parent / "us_location_terms.csv",
         Path(t_terms.__file__).parent / "other_location_terms.csv",
     ]
-    replace: ClassVar[dict[str, str]] = term_util.term_data(all_csvs, "replace")
-    county_in: ClassVar[dict[str, str]] = term_util.term_data(all_csvs, "inside")
+    replace: ClassVar[dict[str, str]] = term_util.look_up_table(all_csvs, "replace")
+    county_in: ClassVar[dict[str, str]] = term_util.look_up_table(all_csvs, "inside")
     county_in |= {k.lower(): v for k, v in county_in.items()}
-    postal: ClassVar[dict[str, str]] = term_util.term_data(all_csvs, "postal")
+    postal: ClassVar[dict[str, str]] = term_util.look_up_table(all_csvs, "postal")
     state_ents: ClassVar[list[str]] = ["us_state", "us_state-us_county", "us_territory"]
     county_ents: ClassVar[list[str]] = ["us_county", "us_state-us_county"]
     admin_ents: ClassVar[list[str]] = [

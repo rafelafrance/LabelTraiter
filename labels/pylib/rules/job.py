@@ -29,7 +29,7 @@ class Job(Base):
 
     replace: ClassVar[dict[str, str]] = {
         "".join(k.split()): v
-        for k, v in term_util.term_data(job_terms, "replace").items()
+        for k, v in term_util.look_up_table(job_terms, "replace").items()
     }
 
     punct: ClassVar[list[str]] = "[.:;,_-]"
