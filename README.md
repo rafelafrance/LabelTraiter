@@ -62,22 +62,23 @@ You will need to have Python3.11+ installed, as well as pip, a package manager f
 If you have `make` you can install the requirements into your python environment like so:
 
 ```bash
-git clone https://github.com/rafelafrance/traiter_herbarium_labels.git
-cd traiter_herbarium_labels
+git clone https://github.com/rafelafrance/LabelTraiter.git
+cd LabelTraiter
 make install
 ```
 
 If you don't have `make` then it's a bit more complicated.
 
 ```bash
-git clone https://github.com/rafelafrance/traiter_herbarium_labels.git
-cd traiter_herbarium_labels
+git clone https://github.com/rafelafrance/LabelTraiter.git
+cd LabelTraiter
 python3.11 -m venv .venv
 source .venv/bin/activate
 python3.11 -m pip install pip setuptools wheel
 python3.11 -m pip install git+https://github.com/rafelafrance/common_utils.git@main#egg=common_utils
 python3.11 -m pip install git+https://github.com/rafelafrance/traiter.git@master#egg=traiter
 python3.11 -m pip install git+https://github.com/rafelafrance/FloraTraiter.git@main#egg=FloraTraiter
+python3.11 -m pip install git+https://github.com/rafelafrance/spell-well.git@main#egg=spell-well
 python3.11 -m pip install .
 python3.11 -m spacy download en_core_web_md
 ```
@@ -87,7 +88,7 @@ python3.11 -m spacy download en_core_web_md
 Every time you run any script in this repository (including tests), you'll have to activate the virtual environment once at the start of your session.
 
 ```bash
-cd traiter_herbarium_labels
+cd LabelTraiter
 source .venv/bin/activate
 ```
 

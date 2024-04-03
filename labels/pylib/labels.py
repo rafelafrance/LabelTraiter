@@ -1,9 +1,9 @@
 from pathlib import Path
 
 from flora.pylib.rules import terms as f_terms
+from spell_well.pylib.spell_well import SpellWell
 from tqdm import tqdm
 from traiter.pylib import term_util
-from traiter.pylib.spell_well import SpellWell
 
 from labels.pylib import pipeline
 from labels.pylib.label import Label

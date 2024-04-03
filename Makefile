@@ -14,6 +14,7 @@ install: venv
 	source $(VENV)/bin/activate
 	$(PIP_INSTALL) -U pip setuptools wheel
 	$(PIP_INSTALL) git+https://github.com/rafelafrance/common_utils.git@main#egg=common_utils
+	$(PIP_INSTALL) git+https://github.com/rafelafrance/spell-well.git@main#egg=spell-well
 	$(PIP_INSTALL) git+https://github.com/rafelafrance/traiter.git@master#egg=traiter
 	$(PIP_INSTALL) git+https://github.com/rafelafrance/FloraTraiter.git@main#egg=FloraTraiter
 	$(PIP_INSTALL) .
@@ -23,6 +24,7 @@ dev: venv
 	source $(VENV)/bin/activate
 	$(PIP_INSTALL) -U pip setuptools wheel
 	$(PIP_INSTALL) -e ../../misc/common_utils
+	$(PIP_INSTALL) -e ../../misc/spell-well
 	$(PIP_INSTALL) -e ../../traiter/traiter
 	$(PIP_INSTALL) -e ../../traiter/FloraTraiter
 	$(PIP_INSTALL) -e .[dev]
