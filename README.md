@@ -2,7 +2,17 @@
 
 Extract traits about plants from labels on herbarium sheets.
 
-## All right, what's this all about then?
+I should also mention that this repository builds upon other repositories:
+- `common_utils`: This is just a grab bag of simple utilities I used in several other project. I got tired of having to change every repository that used them each time there was an edit, so I just put them here.
+  - `https://github.com/rafelafrance/common_utils`
+- `spell-well`: Is a super simple "delete-only" spell checker I wrote. There may be better options now, but it survives until I can find one that handles our particular needs.
+  - `https://github.com/rafelafrance/spell-well`
+- `traiter`: This is the base code for all the rule-based parsers (aka traiters) that I write. The details change but the underlying process is the same for all.
+  - `https://github.com/rafelafrance/traiter`
+- `FloraTraiter`: This repository branched off from FloraTraiter and uses many of the same traits/fields as it does.
+  - `https://github.com/rafelafrance/FloraTraiter`
+
+## All righty, what's this all about then?
 
 The task is take text like this:
 
@@ -67,35 +77,14 @@ cd LabelTraiter
 make install
 ```
 
-If you don't have `make` then it's a bit more complicated.
-
-```bash
-git clone https://github.com/rafelafrance/LabelTraiter.git
-cd LabelTraiter
-python3.11 -m venv .venv
-source .venv/bin/activate
-python3.11 -m pip install pip setuptools wheel
-python3.11 -m pip install git+https://github.com/rafelafrance/common_utils.git@main#egg=common_utils
-python3.11 -m pip install git+https://github.com/rafelafrance/traiter.git@master#egg=traiter
-python3.11 -m pip install git+https://github.com/rafelafrance/FloraTraiter.git@main#egg=FloraTraiter
-python3.11 -m pip install git+https://github.com/rafelafrance/spell-well.git@main#egg=spell-well
-python3.11 -m pip install .
-python3.11 -m spacy download en_core_web_md
-```
-
-## Running
-
-Every time you run any script in this repository (including tests), you'll have to activate the virtual environment once at the start of your session.
+Every time you run any script in this repository, you'll have to activate the virtual environment once at the start of your session.
 
 ```bash
 cd LabelTraiter
 source .venv/bin/activate
 ```
 
-If you have run tests, then please `export MOCK_DATA=0` before you run any scripts on real data.
-
 ```bash
-export MOCK_DATA=0  # Only needed if you've run tests in the current session
 parse-labels <arguments to parse your labels>
 ```
 
@@ -104,7 +93,5 @@ parse-labels <arguments to parse your labels>
 There are tests which you can run like so:
 
 ```bash
-export MOCK_DATA=1; python -m unittest discover
+make test
 ```
-
-Please export MOCK_DATA=0 before you run any scripts on real data.

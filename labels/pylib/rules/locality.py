@@ -12,7 +12,7 @@ from traiter.pylib.pattern_compiler import Compiler
 from traiter.pylib.pipes import add, reject_match
 from traiter.pylib.rules.base import Base
 
-USE_MOCK_DATA = 0
+USE_MOCK_TRAITER = 0
 TOO_LONG = 2
 
 
@@ -220,7 +220,7 @@ class Locality(Base):
 
     @staticmethod
     def get_csvs():
-        global USE_MOCK_DATA
+        global USE_MOCK_TRAITER
 
         here = Path(__file__).parent / "terms"
         csvs = [
@@ -229,11 +229,11 @@ class Locality(Base):
         ]
 
         try:
-            USE_MOCK_DATA = int(os.getenv("MOCK_DATA"))
+            USE_MOCK_TRAITER = int(os.getenv("MOCK_TRAITER"))
         except (TypeError, ValueError):
-            USE_MOCK_DATA = 0
+            USE_MOCK_TRAITER = 0
 
-        if not csvs[0].exists or USE_MOCK_DATA:
+        if not csvs[0].exists or USE_MOCK_TRAITER:
             csvs = [
                 here / "mock_locality_terms.csv",
                 here / "other_locality_terms.csv",
@@ -280,7 +280,7 @@ def labeled_locality_match(ent):
 
 @Language.component("prune_localities")
 def prune_localities(doc):  # noqa: C901
-    if USE_MOCK_DATA:  # Don't prune localities when testing
+    if USE_MOCK_TRAITER:  # Don't prune localities when testing
         return doc
 
     ents = []
