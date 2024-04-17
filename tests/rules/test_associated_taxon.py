@@ -20,20 +20,17 @@ class TestAssociatedTaxon(unittest.TestCase):
                 Taxon(
                     taxon="Cephalanthus occidentalis",
                     rank="species",
-                    trait="taxon",
                     start=0,
                     end=38,
                     authority="L. Rubiaceas",
                 ),
                 AssociatedTaxonLabel(
                     label="associated species",
-                    trait="assoc_taxon_label",
                     start=39,
                     end=57,
                 ),
                 Taxon(
                     rank="species",
-                    trait="taxon",
                     start=59,
                     end=73,
                     taxon="Cornus obliqua",
@@ -49,13 +46,11 @@ class TestAssociatedTaxon(unittest.TestCase):
             [
                 AssociatedTaxonLabel(
                     label="associated species",
-                    trait="assoc_taxon_label",
                     start=0,
                     end=18,
                 ),
                 Taxon(
                     rank="species",
-                    trait="taxon",
                     start=20,
                     end=34,
                     taxon="Cornus obliqua",
@@ -77,7 +72,6 @@ class TestAssociatedTaxon(unittest.TestCase):
             [
                 Taxon(
                     rank="family",
-                    trait="taxon",
                     start=0,
                     end=8,
                     taxon="Fabaceae",
@@ -86,20 +80,17 @@ class TestAssociatedTaxon(unittest.TestCase):
                 Taxon(
                     taxon="Cephalanthus occidentalis",
                     rank="species",
-                    trait="taxon",
                     start=9,
                     end=47,
                     authority="L. Rubiaceas",
                 ),
                 AssociatedTaxonLabel(
                     label="associated species",
-                    trait="assoc_taxon_label",
                     start=48,
                     end=66,
                 ),
                 Taxon(
                     rank="species",
-                    trait="taxon",
                     start=68,
                     end=82,
                     taxon="Cornus obliqua",
@@ -116,14 +107,12 @@ class TestAssociatedTaxon(unittest.TestCase):
                 Taxon(
                     taxon="Cornus obliqua",
                     rank="species",
-                    trait="taxon",
                     start=0,
                     end=14,
                 ),
                 Taxon(
                     taxon="Cephalanthus occidentalis",
                     rank="species",
-                    trait="taxon",
                     start=20,
                     end=45,
                     associated=True,

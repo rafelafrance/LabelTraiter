@@ -36,7 +36,10 @@ class PostProcess:
                 tu.clear_tokens(ent)
                 continue
 
-            if ent._.trait.trait == "id_number" and ent._.trait.type == "record_number":
+            if (
+                ent._.trait._trait == "id_number"
+                and ent._.trait.type == "record_number"
+            ):
                 if rec_num_found:
                     tu.clear_tokens(ent)
                     continue

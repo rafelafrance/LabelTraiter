@@ -10,7 +10,6 @@ class TestIdNumber(unittest.TestCase):
             parse("""No. 5595"""),
             [
                 IdNumber(
-                    trait="id_number",
                     number="5595",
                     type="record_number",
                     has_label=True,
@@ -25,7 +24,6 @@ class TestIdNumber(unittest.TestCase):
             parse("""Acc. No: 39"""),
             [
                 IdNumber(
-                    trait="id_number",
                     number="39",
                     type="accession_number",
                     has_label=True,
@@ -40,7 +38,6 @@ class TestIdNumber(unittest.TestCase):
             parse("""Col No 39"""),
             [
                 IdNumber(
-                    trait="id_number",
                     number="39",
                     type="collector_id",
                     has_label=True,

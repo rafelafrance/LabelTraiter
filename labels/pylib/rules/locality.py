@@ -286,13 +286,13 @@ def prune_localities(doc):  # noqa: C901
     ents = []
     add_locality = False
 
-    has_taxon = any(e._.trait and e._.trait.trait == "taxon" for e in doc.ents)
+    has_taxon = any(e._.trait and e._.trait._trait == "taxon" for e in doc.ents)
 
     for i, ent in enumerate(doc.ents):
         if not ent._.trait:
             continue
 
-        trait = ent._.trait.trait
+        trait = ent._.trait._trait
 
         # Localities come after taxa
         if trait == "taxon":  # "admin_unit"):

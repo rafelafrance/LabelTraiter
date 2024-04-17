@@ -206,7 +206,7 @@ class AdminUnit(Base):
     @classmethod
     def from_ent(cls, ent, **kwargs):
         trait = super().from_ent(ent, **kwargs)
-        trait.trait = "admin_unit"
+        trait._trait = "admin_unit"
         return trait
 
     @classmethod

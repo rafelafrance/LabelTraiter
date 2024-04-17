@@ -12,7 +12,6 @@ class TestDeterminer(unittest.TestCase):
             parse("""Det;; N. H Russell 195"""),
             [
                 Job(
-                    trait="job",
                     start=0,
                     end=18,
                     job="determiner",
@@ -20,7 +19,6 @@ class TestDeterminer(unittest.TestCase):
                     has_label=True,
                 ),
                 IdNumber(
-                    trait="id_number",
                     start=19,
                     end=22,
                     number="195",
@@ -35,7 +33,6 @@ class TestDeterminer(unittest.TestCase):
             parse("""Det. Carter Rosston & Allan Nelson"""),
             [
                 Job(
-                    trait="job",
                     name=["Carter Rosston", "Allan Nelson"],
                     job="determiner",
                     start=0,
@@ -51,7 +48,6 @@ class TestDeterminer(unittest.TestCase):
             parse("""det. H. van der Werff & G. McPherson"""),
             [
                 Job(
-                    trait="job",
                     name=["H. van der Werff", "G. McPherson"],
                     job="determiner",
                     start=0,
@@ -71,7 +67,6 @@ class TestDeterminer(unittest.TestCase):
             ),
             [
                 Job(
-                    trait="job",
                     start=7,
                     end=27,
                     job="determiner",

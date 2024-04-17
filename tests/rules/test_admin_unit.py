@@ -15,7 +15,6 @@ class TestAdminUnit(unittest.TestCase):
             [
                 AdminUnit(
                     us_county="Hempstead",
-                    trait="admin_unit",
                     start=0,
                     end=16,
                 ),
@@ -37,7 +36,6 @@ class TestAdminUnit(unittest.TestCase):
                 AdminUnit(
                     us_county="Mississippi",
                     us_state="Arkansas",
-                    trait="admin_unit",
                     start=0,
                     end=37,
                 ),
@@ -48,7 +46,7 @@ class TestAdminUnit(unittest.TestCase):
         """It handles a county label before the county name."""
         self.assertEqual(
             parse("""COUNTY: Lee"""),
-            [AdminUnit(us_county="Lee", trait="admin_unit", start=0, end=11)],
+            [AdminUnit(us_county="Lee", start=0, end=11)],
         )
 
     def test_admin_unit_05(self):
@@ -58,7 +56,6 @@ class TestAdminUnit(unittest.TestCase):
             [
                 AdminUnit(
                     us_county="Alleghany",
-                    trait="admin_unit",
                     start=0,
                     end=12,
                 ),
@@ -73,7 +70,6 @@ class TestAdminUnit(unittest.TestCase):
                 AdminUnit(
                     us_state="Arkansas",
                     us_county="Desha",
-                    trait="admin_unit",
                     start=0,
                     end=15,
                 ),
@@ -87,7 +83,6 @@ class TestAdminUnit(unittest.TestCase):
             [
                 AdminUnit(
                     us_state="Arkansas",
-                    trait="admin_unit",
                     start=0,
                     end=18,
                 ),
@@ -101,7 +96,6 @@ class TestAdminUnit(unittest.TestCase):
             [
                 AdminUnit(
                     us_state="North Carolina",
-                    trait="admin_unit",
                     start=0,
                     end=24,
                 ),
@@ -122,13 +116,11 @@ class TestAdminUnit(unittest.TestCase):
             [
                 AdminUnit(
                     us_state="North Carolina",
-                    trait="admin_unit",
                     start=39,
                     end=63,
                 ),
                 AdminUnit(
                     us_county="Wilkes",
-                    trait="admin_unit",
                     start=90,
                     end=103,
                 ),
@@ -143,7 +135,6 @@ class TestAdminUnit(unittest.TestCase):
                 AdminUnit(
                     us_county="Cape May",
                     us_state="New Jersey",
-                    trait="admin_unit",
                     start=0,
                     end=20,
                 ),
@@ -157,7 +148,6 @@ class TestAdminUnit(unittest.TestCase):
             [
                 AdminUnit(
                     us_county="Archuleta",
-                    trait="admin_unit",
                     start=0,
                     end=12,
                 ),
@@ -172,7 +162,6 @@ class TestAdminUnit(unittest.TestCase):
                 AdminUnit(
                     us_state="Colorado",
                     us_county="Archuleta",
-                    trait="admin_unit",
                     start=0,
                     end=12,
                 ),
@@ -189,7 +178,6 @@ class TestAdminUnit(unittest.TestCase):
                     us_state="Georgia",
                     end=44,
                     start=34,
-                    trait="admin_unit",
                 ),
             ],
         )
@@ -198,7 +186,7 @@ class TestAdminUnit(unittest.TestCase):
         """It does not pick up label headers and footers."""
         self.assertEqual(
             parse("""Tree The New York Botanical Garden Herbarium"""),
-            [Part(part="tree", type="plant_part", trait="part", start=0, end=4)],
+            [Part(part="tree", type="plant_part", start=0, end=4)],
         )
 
     def test_admin_unit_15(self):
@@ -207,13 +195,11 @@ class TestAdminUnit(unittest.TestCase):
             [
                 AdminUnit(
                     us_county="St. Lucie",
-                    trait="admin_unit",
                     start=0,
                     end=13,
                 ),
                 Locality(
                     locality="Fort Pierce.",
-                    trait="locality",
                     start=15,
                     end=27,
                 ),
@@ -224,7 +210,7 @@ class TestAdminUnit(unittest.TestCase):
         """It gets a province."""
         self.assertEqual(
             parse("""Province of Panama"""),
-            [AdminUnit(end=18, province="panama", start=0, trait="admin_unit")],
+            [AdminUnit(end=18, province="panama", start=0)],
         )
 
     def test_admin_unit_17(self):
@@ -241,7 +227,6 @@ class TestAdminUnit(unittest.TestCase):
                 AdminUnit(
                     us_state="South Carolina",
                     us_county="Dillon",
-                    trait="admin_unit",
                     start=46,
                     end=74,
                 ),
@@ -255,7 +240,6 @@ class TestAdminUnit(unittest.TestCase):
                 AdminUnit(
                     us_state="Missouri",
                     us_county="St. Louis",
-                    trait="admin_unit",
                     start=0,
                     end=19,
                 ),
@@ -269,7 +253,6 @@ class TestAdminUnit(unittest.TestCase):
                 AdminUnit(
                     us_state="North Carolina",
                     us_county="Mecklenburg",
-                    trait="admin_unit",
                     start=0,
                     end=20,
                 ),
@@ -282,7 +265,6 @@ class TestAdminUnit(unittest.TestCase):
             [
                 AdminUnit(
                     us_county="St. Bernard",
-                    trait="admin_unit",
                     start=0,
                     end=19,
                 ),
@@ -296,7 +278,6 @@ class TestAdminUnit(unittest.TestCase):
                 AdminUnit(
                     us_state="California",
                     us_county="San Benito",
-                    trait="admin_unit",
                     start=0,
                     end=29,
                 ),
@@ -309,13 +290,11 @@ class TestAdminUnit(unittest.TestCase):
             [
                 AdminUnit(
                     us_county="Kern",
-                    trait="admin_unit",
                     start=10,
                     end=17,
                 ),
                 AdminUnit(
                     country="USA",
-                    trait="admin_unit",
                     start=19,
                     end=22,
                 ),

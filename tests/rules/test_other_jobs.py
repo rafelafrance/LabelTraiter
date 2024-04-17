@@ -13,7 +13,6 @@ class TestOtherJob(unittest.TestCase):
                 Job(
                     name="John Kinsman",
                     job="verifier",
-                    trait="job",
                     start=0,
                     end=25,
                     has_label=True,

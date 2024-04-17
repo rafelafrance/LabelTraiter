@@ -19,7 +19,6 @@ class TestLocality(unittest.TestCase):
             [
                 Locality(
                     locality="5 miles North of Mason off Hwy 386.",
-                    trait="locality",
                     start=0,
                     end=35,
                 ),
@@ -38,13 +37,11 @@ class TestLocality(unittest.TestCase):
             [
                 Locality(
                     locality="Tunkhannock Twp.",
-                    trait="locality",
                     start=0,
                     end=16,
                 ),
                 Locality(
                     locality="Pocono Pines Quadrangle.",
-                    trait="locality",
                     start=17,
                     end=41,
                 ),
@@ -53,7 +50,6 @@ class TestLocality(unittest.TestCase):
                         "Mud Run, Stonecrest Park,.16 miles SSW of Long Pond, PA. "
                         "Headwaters wetland of Indiana Mountains Lake."
                     ),
-                    trait="locality",
                     start=42,
                     end=144,
                 ),
@@ -72,7 +68,6 @@ class TestLocality(unittest.TestCase):
             [
                 Locality(
                     locality="Florida's Turnpike",
-                    trait="locality",
                     start=0,
                     end=19,
                 ),
@@ -91,7 +86,6 @@ class TestLocality(unittest.TestCase):
                 Locality(
                     locality="Wallowa-Whitman National Forest, Forest Service "
                     "Road 7312.",
-                    trait="locality",
                     start=0,
                     end=58,
                 ),
@@ -104,19 +98,16 @@ class TestLocality(unittest.TestCase):
             [
                 Habitat(
                     habitat="sonoran desert scrub",
-                    trait="habitat",
                     start=0,
                     end=20,
                 ),
                 Locality(
                     locality="disturbed trail side.",
-                    trait="locality",
                     start=22,
                     end=43,
                 ),
                 PlantDuration(
                     plant_duration="annual",
-                    trait="plant_duration",
                     start=55,
                     end=61,
                 ),
@@ -132,17 +123,15 @@ class TestLocality(unittest.TestCase):
                 """,
             ),
             [
-                AdminUnit(trait="admin_unit", start=0, end=7, us_state="Arizona"),
+                AdminUnit(start=0, end=7, us_state="Arizona"),
                 Habitat(
                     habitat="uppland sonoran desert desert scrub flats",
-                    trait="habitat",
                     start=8,
                     end=50,
                 ),
-                Habitat(habitat="sandy soil", trait="habitat", start=52, end=62),
+                Habitat(habitat="sandy soil", start=52, end=62),
                 PlantDuration(
                     plant_duration="annual",
-                    trait="plant_duration",
                     start=76,
                     end=82,
                 ),
@@ -152,17 +141,16 @@ class TestLocality(unittest.TestCase):
     def test_locality_08(self):
         self.assertEqual(
             parse("""Scattered on edge of forest;"""),
-            [Habitat(end=27, habitat="edge of forest", start=13, trait="habitat")],
+            [Habitat(end=27, habitat="edge of forest", start=13)],
         )
 
     def test_locality_09(self):
         self.assertEqual(
             parse("""lobes turned out or black."""),
             [
-                Subpart(trait="subpart", subpart="lobe", start=0, end=5),
+                Subpart(subpart="lobe", start=0, end=5),
                 Color(
                     color="black",
-                    trait="color",
                     start=20,
                     end=25,
                     subpart="lobe",
@@ -183,13 +171,11 @@ class TestLocality(unittest.TestCase):
                 Locality(
                     locality="Along Rte. 39, 9.1 mi SEof Santiago Papasquiaro.",
                     labeled=True,
-                    trait="locality",
                     start=0,
                     end=57,
                 ),
                 Habitat(
                     habitat="Pine-juniper-oak-acacia zone",
-                    trait="habitat",
                     start=58,
                     end=94,
                 ),
@@ -205,10 +191,9 @@ class TestLocality(unittest.TestCase):
                 """,
             ),
             [
-                Part(part="fruit", trait="part", type="fruit_part", start=0, end=5),
+                Part(part="fruit", type="fruit_part", start=0, end=5),
                 Color(
                     color="purple-in-color",
-                    trait="color",
                     start=24,
                     end=44,
                     part="fruit",
@@ -221,7 +206,6 @@ class TestLocality(unittest.TestCase):
             parse("""Monteverde. Elev. 1400- 1500 m. Lower montane rainforest"""),
             [
                 Elevation(
-                    trait="elevation",
                     elevation=1400.0,
                     elevation_high=1500.0,
                     units="m",
@@ -232,7 +216,6 @@ class TestLocality(unittest.TestCase):
                     end=56,
                     habitat="montane rain forest",
                     start=38,
-                    trait="habitat",
                 ),
             ],
         )
@@ -243,7 +226,6 @@ class TestLocality(unittest.TestCase):
             [
                 Locality(
                     locality="Point Sublime Road about 1 miles east of Milk Creek.",
-                    trait="locality",
                     start=0,
                     end=52,
                 ),
@@ -256,7 +238,6 @@ class TestLocality(unittest.TestCase):
             [
                 Locality(
                     locality="north of the Illinois Central Railroad",
-                    trait="locality",
                     start=0,
                     end=38,
                 ),
@@ -268,7 +249,6 @@ class TestLocality(unittest.TestCase):
             parse("""Location: Emory and Henry Campus Ebor Data ?: M a fo C1"""),
             [
                 Locality(
-                    trait="locality",
                     start=0,
                     end=44,
                     locality="Emory and Henry Campus Ebor Data ?",
@@ -288,7 +268,6 @@ class TestLocality(unittest.TestCase):
             parse("""Cheyenne Crossing on US Hwy. 85"""),
             [
                 Locality(
-                    trait="locality",
                     start=0,
                     end=31,
                     locality="Cheyenne Crossing on US Hwy. 85",
