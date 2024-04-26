@@ -70,14 +70,6 @@ def parse_args() -> argparse.Namespace:
     )
 
     arg_parser.add_argument(
-        "--image-dir",
-        metavar="PATH",
-        type=Path,
-        help="""Directory containing the images of labels or treatments.
-            These images are for HTML output.""",
-    )
-
-    arg_parser.add_argument(
         "--traiter-dir",
         metavar="PATH",
         type=Path,
@@ -90,6 +82,14 @@ def parse_args() -> argparse.Namespace:
         type=Path,
         metavar="PATH",
         help="""Output HTML formatted results to this file.""",
+    )
+
+    arg_parser.add_argument(
+        "--image-dir",
+        metavar="PATH",
+        type=Path,
+        help="""Directory containing the images of labels or treatments.
+            These images are for HTML output.""",
     )
 
     arg_parser.add_argument(
