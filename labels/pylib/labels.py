@@ -18,7 +18,7 @@ class Labels:
 
     @staticmethod
     def get_labels(args):
-        labels = [Label(p) for p in sorted(args.text_dir.glob("*"))]
+        labels = [Label(p) for p in sorted(args.text_dir.glob("*.txt"))]
 
         if args.limit:
             labels = labels[args.offset : args.limit + args.offset]
