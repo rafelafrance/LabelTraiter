@@ -24,14 +24,45 @@ def main():
 
     if args.traiter_dir:
         args.traiter_dir.mkdir(parents=True, exist_ok=True)
-        write_json(args, labels, args.traiter_dir)
+        write_separate_files(
+            labels, args.length_cutoff, args.score_cutoff, args.traiter_dir
+        )
+
+    if args.json_output:
+        write_single_file(
+            labels, args.length_cutoff, args.score_cutoff, args.json_output
+        )
 
     log.finished()
 
 
-def write_json(args, labels, traiter_dir):
+def write_single_file(labels, length_cutoff, score_cutoff, json_output):
+    records = []
+
     for lb in labels.labels:
-        if lb.too_short(args.length_cutoff) or lb.bad_score(args.score_cutoff):
+        if lb.too_short(length_cutoff) or lb.bad_score(score_cutoff):
+            continue
+
+        rec = {
+            "image": lb.path.stem,
+            "word_count": lb.word_count,
+            "valid_words": lb.valid_words,
+            "score": lb.score,
+        }
+
+        dwc = DarwinCore()
+        _ = [t.to_dwc(dwc) for t in lb.traits]
+        rec |= dwc.to_dict()
+
+        records.append(rec)
+
+    with json_output.open("w") as f:
+        json.dump(records, f, indent=2)
+
+
+def write_separate_files(labels, length_cutoff, score_cutoff, traiter_dir):
+    for lb in labels.labels:
+        if lb.too_short(length_cutoff) or lb.bad_score(score_cutoff):
             continue
 
         dwc = DarwinCore()
@@ -67,6 +98,13 @@ def parse_args() -> argparse.Namespace:
         type=Path,
         required=True,
         help="""Directory containing the input text files.""",
+    )
+
+    arg_parser.add_argument(
+        "--json-output",
+        metavar="PATH",
+        type=Path,
+        help="""Output a JSON file holding traits.""",
     )
 
     arg_parser.add_argument(
