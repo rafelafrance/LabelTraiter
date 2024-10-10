@@ -104,7 +104,7 @@ def build():  # noqa: PLR0915
 
     AdminUnit.pipe(nlp, overwrite=["color"])
 
-    Taxon.pipe(nlp, extend=2, overwrite=["habitat", "color"])
+    Taxon.pipe(nlp, extend=3, overwrite=["habitat", "color"])
 
     PartLocation.pipe(nlp)
     TaxonLike.pipe(nlp)
