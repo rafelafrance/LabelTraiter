@@ -26,8 +26,8 @@ class Label:
     formatted_text: str = ""
     formatted_traits: list[str] = field(default_factory=list)
 
-    def parse(self, nlp, image_paths, vocabulary):
-        with self.path.open() as f:
+    def parse(self, nlp, image_paths, vocabulary, encoding="utf8"):
+        with self.path.open(encoding=encoding) as f:
             self.text = f.read()
             self.text = t_util.compress(self.text)
 

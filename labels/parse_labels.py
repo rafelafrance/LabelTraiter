@@ -167,6 +167,15 @@ def parse_args() -> argparse.Namespace:
         help="""This trait will get its own color for HTML output.""",
     )
 
+    arg_parser.add_argument(
+        "--encoding",
+        metavar="ENCODING",
+        default="utf8",
+        help="""What encoding is used for the input file. These should be Western
+        European encodings; that's what the parsers are designed for.
+        (default: %(default)s)""",
+    )
+
     args = arg_parser.parse_args()
     return args
 

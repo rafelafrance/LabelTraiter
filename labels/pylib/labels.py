@@ -15,6 +15,7 @@ class Labels:
         self.nlp = pipeline.build()
         self.image_paths = self.get_image_paths(args)
         self.vocabulary: set = self.get_vocabulary()
+        self.encoding = args.encoding
 
     @staticmethod
     def get_labels(args):
@@ -49,4 +50,6 @@ class Labels:
 
     def parse(self):
         for lb in tqdm(self.labels, desc="parse"):
-            lb.parse(self.nlp, self.image_paths, self.vocabulary)
+            lb.parse(
+                self.nlp, self.image_paths, self.vocabulary, encoding=self.encoding
+            )
