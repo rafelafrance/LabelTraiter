@@ -1,14 +1,15 @@
 from dataclasses import dataclass
 from pathlib import Path
 
-from flora.pylib.writers.base_html_writer import HtmlWriter, HtmlWriterRow
+from flora.pylib.writers.html_writer import HtmlWriter as BaseWriter
+from flora.pylib.writers.html_writer import HtmlWriterRow as BaseWriterRow
 from tqdm import tqdm
 
 from labels.pylib.labels import Labels
 
 
 @dataclass(kw_only=True)
-class HtmlWriterRow(HtmlWriterRow):
+class HtmlWriterRow(BaseWriterRow):
     label_id: str = ""
     label_image: str = ""
     word_count: int = 0
@@ -16,7 +17,7 @@ class HtmlWriterRow(HtmlWriterRow):
     score: float = 0.0
 
 
-class HtmlWriter(HtmlWriter):
+class HtmlWriter(BaseWriter):
     def __init__(self, html_file, spotlight=""):
         super().__init__(
             template_dir=f"{Path.cwd()}/labels/pylib/writers/templates",
