@@ -6,6 +6,7 @@ from typing import ClassVar
 
 import traiter.pylib.darwin_core as t_dwc
 from flora.pylib import const
+from flora.pylib.rules import terms as f_terms
 from spacy import Language, registry
 from traiter.pylib import const as t_const
 from traiter.pylib import taxon_util, term_util
@@ -19,13 +20,13 @@ NAME_LEN: int = 2
 
 
 def get_csvs() -> dict[str, Path]:
-    here = Path(__file__).parent / "terms"
+    # here = Path(__file__).parent / "terms"
     csvs = {
         "name_terms": Path(t_terms.__file__).parent / "name_terms.csv",
-        "taxon_terms": here / "taxon_terms.csv",
-        "rank_terms": here / "rank_terms.csv",
-        "binomial_terms": here / "binomial_terms.zip",
-        "monomial_terms": here / "monomial_terms.zip",
+        "taxon_terms": Path(f_terms.__file__).parent / "taxon_terms.csv",
+        "rank_terms": Path(f_terms.__file__).parent / "rank_terms.csv",
+        "binomial_terms": Path(f_terms.__file__).parent / "binomial_terms.zip",
+        "monomial_terms": Path(f_terms.__file__).parent / "monomial_terms.zip",
     }
 
     try:
@@ -38,8 +39,12 @@ def get_csvs() -> dict[str, Path]:
         or not csvs["monomial_terms"].exists()
         or use_mock_traiter
     ):
-        csvs["binomial_terms"] = here / "mock_binomial_terms.csv"
-        csvs["monomial_terms"] = here / "mock_monomial_terms.csv"
+        csvs["binomial_terms"] = (
+            Path(f_terms.__file__).parent / "mock_binomial_terms.csv"
+        )
+        csvs["monomial_terms"] = (
+            Path(f_terms.__file__).parent / "mock_monomial_terms.csv"
+        )
 
     return csvs
 

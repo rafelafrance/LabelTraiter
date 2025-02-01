@@ -17,6 +17,7 @@ def main():
 
     labels: Labels = Labels(args)
     labels.parse()
+    labels.filter(args.length_cutoff, args.score_cutoff)
 
     if args.html_file:
         writer = HtmlWriter(args.html_file, args.spotlight)
@@ -24,25 +25,18 @@ def main():
 
     if args.traiter_dir:
         args.traiter_dir.mkdir(parents=True, exist_ok=True)
-        write_separate_files(
-            labels, args.length_cutoff, args.score_cutoff, args.traiter_dir
-        )
+        write_separate_files(labels, args.traiter_dir)
 
     if args.json_output:
-        write_single_file(
-            labels, args.length_cutoff, args.score_cutoff, args.json_output
-        )
+        write_single_file(labels, args.json_output)
 
     log.finished()
 
 
-def write_single_file(labels, length_cutoff, score_cutoff, json_output):
+def write_single_file(labels, json_output):
     records = []
 
     for lb in labels.labels:
-        if lb.too_short(length_cutoff) or lb.bad_score(score_cutoff):
-            continue
-
         rec = {
             "image": lb.path.stem,
             "word_count": lb.word_count,
@@ -60,11 +54,8 @@ def write_single_file(labels, length_cutoff, score_cutoff, json_output):
         json.dump(records, f, indent=2)
 
 
-def write_separate_files(labels, length_cutoff, score_cutoff, traiter_dir):
+def write_separate_files(labels, traiter_dir):
     for lb in labels.labels:
-        if lb.too_short(length_cutoff) or lb.bad_score(score_cutoff):
-            continue
-
         dwc = DarwinCore()
         _ = [t.to_dwc(dwc) for t in lb.traits]
 
@@ -75,7 +66,6 @@ def write_separate_files(labels, length_cutoff, score_cutoff, traiter_dir):
 
 def parse_args() -> argparse.Namespace:
     arg_parser = argparse.ArgumentParser(
-        fromfile_prefix_chars="@",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         description=textwrap.dedent(
             """

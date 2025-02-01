@@ -27,17 +27,7 @@ class HtmlWriter(BaseWriter):
         )
 
     def write(self, labels: Labels, args=None):
-        length_cutoff, score_cutoff = 0, 0
-
         for lb in tqdm(labels.labels, desc="write"):
-            if lb.too_short(args.length_cutoff):
-                length_cutoff += 1
-                continue
-
-            if lb.bad_score(args.score_cutoff):
-                score_cutoff += 1
-                continue
-
             self.formatted.append(
                 HtmlWriterRow(
                     label_id=lb.path.stem,
@@ -50,14 +40,13 @@ class HtmlWriter(BaseWriter):
                 ),
             )
 
-        total = len(labels.labels)
-        total_removed = length_cutoff + score_cutoff
+        total_removed = labels.score_too_low + labels.too_short
         summary = {
-            "Total labels:": total,
-            "Kept:": total - total_removed,
+            "Total labels:": labels.unfiltered_count,
+            "Kept:": len(labels.labels),
             "Total removed:": total_removed,
-            "Too short:": length_cutoff,
-            "Score too low:": score_cutoff,
+            "Too short:": labels.too_short,
+            "Score too low:": labels.score_too_low,
             "Length cutoff:": args.length_cutoff,
             "Score cutoff:": args.score_cutoff,
         }

@@ -1,3 +1,4 @@
+import logging
 from pathlib import Path
 
 from flora.pylib.rules import terms as f_terms
@@ -16,6 +17,9 @@ class Labels:
         self.image_paths = self.get_image_paths(args)
         self.vocabulary: set = self.get_vocabulary()
         self.encoding = args.encoding
+        self.score_too_low = 0
+        self.too_short = 0
+        self.unfiltered_count = len(self.labels)
 
     @staticmethod
     def get_labels(args):
@@ -53,3 +57,26 @@ class Labels:
             lb.parse(
                 self.nlp, self.image_paths, self.vocabulary, encoding=self.encoding
             )
+
+    def filter(self, length_cutoff, score_cutoff):
+        filtered = []
+        for lb in tqdm(self.labels, desc="filter"):
+            if lb.too_short(length_cutoff):
+                logging.warning(
+                    f"Removed '{lb.path.stem}', "
+                    f"length {lb.word_count} < {length_cutoff} cutoff"
+                )
+                self.too_short += 1
+                continue
+
+            if lb.bad_score(score_cutoff):
+                logging.warning(
+                    f"Removed '{lb.path.stem}', "
+                    f"score {lb.score} < {score_cutoff} cutoff"
+                )
+                self.score_too_low += 1
+                continue
+
+            filtered.append(lb)
+
+        self.labels = filtered
